@@ -31,7 +31,6 @@ import com.example.streetkings.core.data.WorkoutPark
 
 class MapViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Inicijalizujemo naš LocationClient
     private val locationClient = DefaultLocationClient(
         application,
         LocationServices.getFusedLocationProviderClient(application)
@@ -41,7 +40,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    // Definišemo stanje koje će UI posmatrati
+
     private val _mapState = MutableStateFlow(MapState())
     val mapState = _mapState.asStateFlow()
 
@@ -58,7 +57,6 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             val user = auth.currentUser
             val currentLocation = mapState.value.currentLocation
 
-            // Proveravamo da li imamo sve potrebne podatke
             if (user == null || currentLocation == null) {
                 // TODO: Prikazati grešku korisniku
                 return@launch
@@ -93,19 +91,19 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             val equipment = mapState.value.selectedEquipment
             val rating = mapState.value.minRating
             val nameFilter = mapState.value.parkNameFilter
-            val radiusKm = mapState.value.searchRadiusKm // <-- NOVO
-            val currentUserLocation = mapState.value.currentLocation // <-- NOVO
+            val radiusKm = mapState.value.searchRadiusKm
+            val currentUserLocation = mapState.value.currentLocation
 
             parkRepository.getParks(equipment, rating).collect { result ->
                 result.onSuccess { parksFromRepo ->
-                    // Filtriranje po imenu
+
                     val filteredByName = if (nameFilter.isNotBlank()) {
                         parksFromRepo.filter { park -> park.name.contains(nameFilter, ignoreCase = true) }
                     } else {
                         parksFromRepo
                     }
 
-                    // --- NOVI DEO: FILTRIRANJE PO RADIJUSU ---
+
                     val finalFilteredParks = if (currentUserLocation != null) {
                         filteredByName.filter { park ->
                             park.location?.let { parkLocation ->
@@ -113,15 +111,15 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                                     currentUserLocation.latitude, currentUserLocation.longitude,
                                     parkLocation.latitude, parkLocation.longitude
                                 )
-                                // Konvertujemo radijus u metre za poređenje
+
                                 distance <= radiusKm * 1000
                             } ?: false
                         }
                     } else {
-                        // Ako nemamo lokaciju korisnika, ne možemo filtrirati po radijusu
+
                         filteredByName
                     }
-                    // --- KRAJ NOVOG DELA ---
+
 
                     _mapState.value = mapState.value.copy(parks = finalFilteredParks)
 
