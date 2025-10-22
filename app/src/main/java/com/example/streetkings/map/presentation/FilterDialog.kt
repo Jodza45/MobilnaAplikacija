@@ -68,7 +68,7 @@ fun FilterDialog(
                 }
             }
         },
-        confirmButton = {
+        confirmButton = {                                               //dugme za prosledjivanje podataka
             Button(onClick = { onApplyFilters(parkNameFilter, selectedEquipment.toList(), minRating,radiusInKm) }) {
                 Text("Primeni")
             }

@@ -84,7 +84,7 @@ fun AddParkScreen(
                 Button(
                     onClick = {
                         if (parkName.isNotBlank()) {
-                            onAddPark(parkName, selectedEquipment.toList(), rating)
+                            onAddPark(parkName, selectedEquipment.toList(), rating)             //prosledjena funkcija
                         }
                     },
                     enabled = parkName.isNotBlank()

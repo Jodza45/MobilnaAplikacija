@@ -119,7 +119,7 @@ fun MapScreen(navController: NavHostController) {
                     .align(Alignment.TopStart)
                     .padding(start = 16.dp, top = 32.dp, end = 16.dp, bottom = 16.dp)
             ) {
-                Button(   //filter
+                Button(                                                                         //filter
                     onClick = { showFilterDialog = true },
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
                 ) {
@@ -128,8 +128,8 @@ fun MapScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(8.dp))
 
 
-                Button(  //tabela parkova
-                    onClick = { navController.navigate(Routes.PARK_TABLE_SCREEN) },
+                Button(
+                    onClick = { navController.navigate(Routes.PARK_TABLE_SCREEN) },            //tabela parkova
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Icon(Icons.Default.List, contentDescription = "Lista parkova")
@@ -137,15 +137,15 @@ fun MapScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(8.dp))
 
 
-                Button(  //tabela korisnika
-                    onClick = { navController.navigate(Routes.LEADERBOARD_SCREEN) },
+                Button(
+                    onClick = { navController.navigate(Routes.LEADERBOARD_SCREEN) },           //tabela korisnika
                     contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
                 ) {
                     Icon(Icons.Default.Leaderboard, contentDescription = "Rang lista")
                 }
             }
 
-            FloatingActionButton(  //dodaj mapu
+            FloatingActionButton(                                                           //dodavanje mape
                 onClick = { showAddParkDialog = true },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -154,7 +154,7 @@ fun MapScreen(navController: NavHostController) {
                 Icon(Icons.Default.Add, contentDescription = "Dodaj park")
             }
 
-            if (showAddParkDialog) {
+            if (showAddParkDialog) {                                                        //prikaz ekrana za dodavanje
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -171,7 +171,7 @@ fun MapScreen(navController: NavHostController) {
                 }
             }
 
-            if (showFilterDialog) {
+            if (showFilterDialog) {                                                         //prikaz ekrana za filtriranje
                 FilterDialog(
                     onDismiss = { showFilterDialog = false },
                     onApplyFilters = { parkName, equipment, rating, radius ->

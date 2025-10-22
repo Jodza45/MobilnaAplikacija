@@ -73,7 +73,7 @@ fun RegisterScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
+        Button(                                                                                                 //registruj dugme
             onClick = {
                 authViewModel.registerUserWithDetails(email, password, firstName, lastName, phone, imageUri)
             },
@@ -85,7 +85,7 @@ fun RegisterScreen(
 
         Text(
             text = "Već imaš nalog? Prijavi se",
-            modifier = Modifier.clickable { onLoginClick() },
+            modifier = Modifier.clickable { onLoginClick() },                   //ka loginu
             color = MaterialTheme.colorScheme.primary,
             textDecoration = TextDecoration.Underline
         )
@@ -97,7 +97,6 @@ fun RegisterScreen(
             is AuthState.Success -> {
                 LaunchedEffect(Unit) {
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-
                 }
             }
             is AuthState.Error -> Text(text = "Greška: ${state.message}", color = MaterialTheme.colorScheme.error)

@@ -58,7 +58,6 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             val currentLocation = mapState.value.currentLocation
 
             if (user == null || currentLocation == null) {
-                // TODO: Prikazati grešku korisniku
                 return@launch
             }
 
@@ -131,14 +130,13 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private fun checkForNearbyParks(currentLocation: android.location.Location) {
-        // Učitaj parkove pre provere ako lista nije već učitana
         if (mapState.value.parks.isEmpty()) {
-            Log.d("NEARBY_CHECK", "Lista parkova je prazna, učitavam ih...")
+            //Log.d("NEARBY_CHECK", "Lista parkova je prazna, učitavam ih...")
             loadParks()
-            return // Izađi iz funkcije za sada, sačekaj sledeći update lokacije
+            return
         }
 
-        Log.d("NEARBY_CHECK", "Proveravam blizinu za ${mapState.value.parks.size} parkova.")
+        //Log.d("NEARBY_CHECK", "Proveravam blizinu za ${mapState.value.parks.size} parkova.")
 
         mapState.value.parks.forEach { park ->
             park.location?.let { parkLocation ->
@@ -147,9 +145,8 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                     parkLocation.latitude, parkLocation.longitude
                 )
 
-                Log.d("NEARBY_CHECK", "Udaljenost do parka '${park.name}' je ${distance.toInt()} metara.")
+                //Log.d("NEARBY_CHECK", "Udaljenost do parka '${park.name}' je ${distance.toInt()} metara.")
 
-                // Proveravamo da li je park već u setu notifikacija
                 val alreadyNotified = notifiedParks.contains(park.id)
                 if (alreadyNotified) {
                     Log.d("NEARBY_CHECK", "Za park '${park.name}' je već poslata notifikacija, preskačem.")
@@ -173,7 +170,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             )
 
             if (distance < 500 && !notifiedUsers.contains(userId)) {
-                sendNotification("Korisnik u blizini!", "Drugi vežbač je u blizini.") // TODO: Dohvatiti ime korisnika
+                sendNotification("Korisnik u blizini!", "Drugi vežbač je u blizini.")
                 notifiedUsers.add(userId)
             }
         }
@@ -186,7 +183,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                 parkRepository.getUserLocations(userId).collect { result ->
                     result.onSuccess { locations ->
                         _mapState.value = mapState.value.copy(userLocations = locations)
-                    }.onFailure { /* TODO */ }
+                    }.onFailure { }
                 }
             }
         }
@@ -197,13 +194,12 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         loadParks()
         loadUserLocations()
 
-        locationClient.getLocationUpdates(10000L) // Svakih 10 sekundi
+        locationClient.getLocationUpdates(10000L)
             .catch { e ->
                 Log.e("LOCATION_ERROR", "Greška prilikom pokretanja praćenja lokacije: ${e.message}")
                 e.printStackTrace()
             }
             .onEach { location ->
-                // Ažuriramo stanje
                 _mapState.value = mapState.value.copy(
                     currentLocation = location,
                     properties = MapProperties(
@@ -211,7 +207,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                     )
                 )
 
-                // Šaljemo lokaciju na Firebase
+
                 auth.currentUser?.uid?.let { userId ->
                     val locationData = mapOf(
                         "latitude" to location.latitude,
@@ -226,7 +222,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
                         }
                 }
 
-                // Proveravamo blizinu parkova
+
                 checkForNearbyParks(location)
                 checkForNearbyUsers(location)
             }
@@ -235,14 +231,13 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun applyFilters(parkName: String, equipment: List<String>, rating: Float, radius: Int) {
-        // 1. Ažuriraj stanje sa novim filterima
         _mapState.value = mapState.value.copy(
             parkNameFilter = parkName,
             selectedEquipment = equipment,
             minRating = rating,
             searchRadiusKm = radius
         )
-        // 2. Ponovo učitaj parkove sa novim filterima
+
         loadParks()
     }
 
@@ -252,10 +247,10 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         val notificationManager = getApplication<Application>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val notification = NotificationCompat.Builder(getApplication(), "nearby_channel")
-            .setContentTitle(title) // <-- Fali tačka
-            .setContentText(message) // <-- Fali tačka
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // <-- Fali tačka
-            .build() // <-- Fali tačka
+            .setContentTitle(title)
+            .setContentText(message)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .build()
 
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
     }
@@ -276,7 +271,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
 }
 
-// Data klasa koja opisuje stanje celog MapScreen-a
+
 data class MapState(
     val properties: MapProperties = MapProperties(),
     val currentLocation: android.location.Location? = null,

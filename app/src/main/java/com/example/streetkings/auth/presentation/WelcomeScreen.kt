@@ -55,14 +55,14 @@ fun WelcomeScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Button(
+                    Button(                                         //login dugme
                         onClick = onLoginClick,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text("Prijavi se")
                     }
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedButton(
+                    OutlinedButton(                                 //register dugme
                         onClick = onRegisterClick,
                         modifier = Modifier.fillMaxWidth()
                     ) {

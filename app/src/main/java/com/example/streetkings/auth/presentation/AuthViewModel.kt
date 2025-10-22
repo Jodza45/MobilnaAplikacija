@@ -17,10 +17,10 @@ class AuthViewModel : ViewModel() {
     private val _authState = MutableStateFlow<AuthState>(AuthState.Initial)
     val authState = _authState.asStateFlow()
 
-    fun registerUser(email: String, pass: String) {
+    fun registerUser(email: String, pass: String) {         //probna funkcija
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            authRepository.createUser(email, pass).collect { result ->
+            authRepository.createUser(email, pass).collect { result ->          //repo poziv
                 result.onSuccess {
                     _authState.value = AuthState.Success("Uspešna registracija!")
                 }.onFailure {
@@ -33,7 +33,7 @@ class AuthViewModel : ViewModel() {
     fun loginUser(email: String, pass: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
-            authRepository.loginUser(email, pass).collect { result ->
+            authRepository.loginUser(email, pass).collect { result ->           //repo poziv
                 result.onSuccess {
                     //Log.d("LOGIN_PROCESS", "Uspešna prijava! Postavljam stanje na Success.")
                     _authState.value = AuthState.Success("Uspešna prijava!")
@@ -48,20 +48,17 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
 
-
             val user = User(
                 firstName = firstName,
                 lastName = lastName,
                 phone = phone
             )
 
-
-            authRepository.registerUserWithDetails(email, pass, user, imageUri)
+            authRepository.registerUserWithDetails(email, pass, user, imageUri)             //repo poziv
                 .collect { result ->
                     result.onSuccess {
                         _authState.value = AuthState.Success("Korisnik uspešno registrovan!")
                     }.onFailure {
-
                         _authState.value = AuthState.Error(it.message ?: "Greška pri registraciji")
                     }
                 }

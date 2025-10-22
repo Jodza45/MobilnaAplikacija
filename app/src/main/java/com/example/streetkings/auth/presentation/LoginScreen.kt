@@ -51,7 +51,7 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
+        Button(                                                         //login
             onClick = { authViewModel.loginUser(email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -60,7 +60,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Nemaš nalog? Registruj se",
+            text = "Nemaš nalog? Registruj se",                         //ka registru
             modifier = Modifier.clickable { onRegisterClick() },
             color = MaterialTheme.colorScheme.primary,
             textDecoration = TextDecoration.Underline
@@ -74,7 +74,7 @@ fun LoginScreen(
                 LaunchedEffect(Unit) {
 
                     Toast.makeText(context, state.message, Toast.LENGTH_SHORT).show()
-                    onLoginSuccess()
+                    onLoginSuccess()                                    //ka mapi pri uspesnom loginu
                 }
             }
             is AuthState.Error -> Text(text = "Greška: ${state.message}", color = MaterialTheme.colorScheme.error)
