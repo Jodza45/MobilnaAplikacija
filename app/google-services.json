@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "172281191025",
+    "project_id": "streetkings-7ec0b",
+    "storage_bucket": "streetkings-7ec0b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172281191025:android:3d557348f73bd46f3e99d0",
+        "android_client_info": {
+          "package_name": "com.example.streetkings"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1vGYH2t2ScaFR4nlDFtkeK8lo5Qjza6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
